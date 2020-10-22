@@ -1,10 +1,10 @@
 <html>
 
 <head>
-    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="manifest" href="./manifest.webmanifest">
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js').then(function (registration) {
+            navigator.serviceWorker.register('./sw.js').then(function (registration) {
                 // Registration was successful
                 console.log('ServiceWorker registration successful with scope: ', registration.scope);
             }, function (err) {
@@ -189,7 +189,7 @@
     <nav>
         <div class="headerbar">
             <h1 class="headerbar-title">Ordinazione Cuppe</h1>
-            <img class="headerbar-icon" src="/cuppe.svg" />
+            <img class="headerbar-icon" src="./cuppe.svg" />
         </div>
     </nav>
     <div class="content">
