@@ -5,6 +5,8 @@
     <link rel="manifest" href="./manifest.webmanifest">
     <link rel="icon" type="image/png" href="./icon-192.png" />
     <script>
+        let deferredPrompt;
+
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js').then(function (registration) {
                 // Registration was successful
@@ -12,6 +14,31 @@
             }, function (err) {
                 // registration failed :(
                 console.log('ServiceWorker registration failed: ', err);
+            });
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+                // Prevent the mini-infobar from appearing on mobile
+                e.preventDefault();
+                // Stash the event so it can be triggered later.
+                deferredPrompt = e;
+                // Update UI notify the user they can install the PWA
+                let buttonInstall = document.querySelector('#install-button')
+                buttonInstall.style.display = null;
+
+                buttonInstall.addEventListener('click', (e) => {
+                    // Hide the app provided install promotion
+                    buttonInstall.style.display = 'none';
+                    // Show the install prompt
+                    deferredPrompt.prompt();
+                    // Wait for the user to respond to the prompt
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                      if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                      } else {
+                        console.log('User dismissed the install prompt');
+                      }
+                    });
+                  });
             });
         }
     </script>
@@ -63,6 +90,27 @@
 
         .paragraph {
             padding: 0 1em;
+        }
+
+        #install-button {
+            display: inline-block;
+            border-radius: 0.5em;
+            padding: 0.5em;
+            box-sizing: border-box;
+            background: crimson;
+            color: white;
+            font-weight: bolder;
+            position: relative;
+            top:-0.1em;
+            cursor: pointer;
+            animation: blowingorange 0.5s linear alternate-reverse infinite;
+        }
+
+        @keyframes blowingorange {
+            to {
+                background-color: rgb(220, 100, 20);
+                box-shadow: 0 0 10px #00000099;
+            }
         }
 
         .button{
@@ -192,6 +240,7 @@
     <nav>
         <div class="headerbar">
             <h1 class="headerbar-title">Ordinazione Cuppe</h1>
+            <span id="install-button" style="display: none;">Installa</span>
             <img class="headerbar-icon" src="./cuppe.svg" />
         </div>
     </nav>
