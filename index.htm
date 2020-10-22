@@ -57,6 +57,7 @@
         }
 
         .headerbar {
+            position: relative;
             width: 100%;
             flex: 0 1 auto;
             background: #eeeeee;
@@ -71,7 +72,9 @@
         }
 
         .headerbar-icon {
-            float: right;
+            position: absolute;
+            right: 0;
+            top: 0;
             height: calc(100% - 2em);
             padding: 1em;
         }
@@ -101,7 +104,7 @@
             color: white;
             font-weight: bolder;
             position: relative;
-            top:-0.1em;
+            margin: 0.7em;
             cursor: pointer;
             animation: blowingorange 0.5s linear alternate-reverse infinite;
         }
